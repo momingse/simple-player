@@ -1,7 +1,7 @@
 import { Children, useEffect, useState } from "react";
 import BetterDrag from "../utils/BetterDrag";
 import readFiles from "../utils/readFiles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   draggingFile,
   notDraggingFile,
@@ -14,6 +14,10 @@ const DropArea = (props) => {
   const { children } = props;
   const betterDrag = new BetterDrag(document);
   const dispatch = useDispatch();
+
+  const currentSongListLength = useSelector(
+    (state) => state.app.songList.length
+  );
 
   const onDragOver = (e) => {
     const file = e.dataTransfer.files;
@@ -41,12 +45,10 @@ const DropArea = (props) => {
     const filteredFile = readFiles.filterFilesByType(files, "audio");
     if (!filteredFile.length) return;
 
-    let nextId = filteredFile.length;
     const songList = [];
 
     const waterFall = new WaterFallOver(filteredFile);
     const onProcessFile = (obj) => {
-      obj.item.id = nextId++;
       obj.item.readTags().then(() => {
         songList.push(obj.item);
         obj.next();

@@ -51,6 +51,9 @@ const appReducer = (prevState, action) => {
       return { ...prevState, songList: action.newList };
 
     case types.DROP_FILES:
+      action.songList.forEach((song, index) => {
+        song.id = index + prevState.songList.length;
+      });
       return {
         ...prevState,
         songList: [...prevState.songList, ...action.songList],
