@@ -112,7 +112,7 @@ const appReducer = (prevState, action) => {
       for (let i = 0; i < prevState.songList.length; i++) {
         if (prevState.songList[i].id !== prevState.playingSong.id) continue;
         if (i + 1 >= prevState.songList.length) {
-          prevState.playingSong.isPause = true;
+          prevState.playingSong = prevState.songList[0];
         } else {
           prevState.playingSong = prevState.songList[i + 1];
         }

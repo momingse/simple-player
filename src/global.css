@@ -450,6 +450,20 @@ body {
   border-radius: 50%;
   background-size: 100%;
   margin: auto;
+  animation: spin 20s linear infinite;
+}
+
+.songcover-container__is-paused {
+  animation-play-state: paused;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Player Spectrum */

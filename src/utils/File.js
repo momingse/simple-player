@@ -1,4 +1,4 @@
-import p from "path";
+import p, { resolve } from "path";
 import mime from "mime";
 import jsmediatags from "jsmediatags";
 import albumArt from "album-art";
@@ -82,14 +82,14 @@ class File {
 
   findCover() {
     return new Promise((resolve, reject) => {
-      this.searchAlbumArt(this.artist, this.album, "large")
+      this.searchAlbumArt(this.artist, { album: this.album, size: "large" })
         .then((url) => {
           this.cover = url;
           this.convertCoverToBase64();
           resolve(url);
         })
         .catch(() => {
-          this.searchAlbumArt(this.artist, null, "large")
+          this.searchAlbumArt(this.artist, { size: "large" })
             .then((url) => {
               this.cover = url;
               this.convertCoverToBase64();
@@ -103,19 +103,18 @@ class File {
   }
 
   convertCoverToBase64() {
-    axios.get(
-      {
-        uri: this.cover,
-        encoding: null,
-      },
-      (err, response, body) => {
-        if (!err && response.statusCode >= 200 && response.statusCode < 400) {
+    axios
+      .get(this.cover)
+      .then((response) => {
+        if (response.statusCode >= 200 && response.statusCode < 400) {
           const type = response.headers["content-type"];
           const base64Body = new Buffer(body).toString("base64");
           this.cover = `data:${type};base64,${base64Body}`;
         }
-      }
-    );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

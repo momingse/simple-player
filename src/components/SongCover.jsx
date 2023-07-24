@@ -7,6 +7,7 @@ const SongCover = () => {
   const [url, setUrl] = useState(UNKNOWN_URL);
 
   const playingSong = useSelector((state) => state.app.playingSong);
+  const songPlaying = !useSelector((state) => state.app.playingSong?.isPaused);
 
   useEffect(() => {
     if (playingSong) {
@@ -20,18 +21,17 @@ const SongCover = () => {
       return;
     }
 
-    try {
-      const cover = await file.findCover();
-      setUrl(cover);
-    } catch (error) {
-      console.log(error);
-      setUrl(UNKNOWN_URL);
-    }
+    const cover = await file.findCover();
+    if (cover) setUrl(cover);
   };
+
+  const _className =
+    "songcover-container" +
+    (playingSong && songPlaying ? "" : " songcover-container__is-paused");
 
   return (
     <div
-      className="songcover-container"
+      className={_className}
       style={{ backgroundImage: `url(${url})` }}
     ></div>
   );
