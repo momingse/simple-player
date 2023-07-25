@@ -16,11 +16,11 @@ Since there are some packages are outdated and I also want to try using other pa
 
 ## Upcoming
 
-- cover searching 
-
-- randomly playing song
+- randomly playing song mode
 
 - mute when seeker is dragging
+
+- repeated song porblem
 
 ## Last
 
